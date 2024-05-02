@@ -1,10 +1,5 @@
 """Prezzi PUN del mese"""
 from datetime import date, timedelta, datetime
-import holidays
-from statistics import mean
-import zipfile, io
-from bs4 import BeautifulSoup
-import xml.etree.ElementTree as et
 from typing import Tuple
 
 from aiohttp import ClientSession
@@ -32,8 +27,9 @@ from .const import (
     EVENT_UPDATE_FASCIA,
     EVENT_UPDATE_PUN
 )
-
+import holidays
 import logging
+
 _LOGGER = logging.getLogger(__name__)
 
 # Usa sempre il fuso orario italiano (i dati del sito sono per il mercato italiano)
@@ -41,6 +37,10 @@ tz_pun = ZoneInfo('Europe/Rome')
 
 # Definisce i tipi di entità
 PLATFORMS: list[str] = ["sensor"]
+
+# Carica le festività italiane
+it_holidays = holidays.IT()
+
 
 async def async_setup_entry(hass: HomeAssistant, config: ConfigEntry) -> bool:
     """Impostazione dell'integrazione da configurazione Home Assistant"""
